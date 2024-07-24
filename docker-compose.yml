@@ -1,0 +1,116 @@
+version: '3.9'
+
+services:
+  mongodb-users:
+    image: mongo:latest
+    container_name: mongodb-users
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data-users:/data/db
+    networks:
+      - movie-api-network
+
+  mongodb-movies:
+    image: mongo:latest
+    container_name: mongodb-movies
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data-movies:/data/db
+    networks:
+      - movie-api-network
+
+  mongodb-logs:
+    image: mongo:latest
+    container_name: mongodb-logs
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongo-data-logs:/data/db
+    networks:
+      - movie-api-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - movie-api-network
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - zookeeper
+    networks:
+      - movie-api-network
+
+  msusers:
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    container_name: msusers
+    ports:
+      - "5002:5000"
+    volumes:
+      - ./services/msusers:/app
+    working_dir: /app
+    command: sh -c "while true; do sleep 1000; done"
+    networks:
+      - movie-api-network
+    depends_on:
+      - kafka
+      - mongodb-users
+
+  msmovies:
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    container_name: msmovies
+    ports:
+      - "5003:5000"
+    volumes:
+      - ./services/msmovies:/app
+    working_dir: /app
+    command: sh -c "while true; do sleep 1000; done"
+    networks:
+      - movie-api-network
+    depends_on:
+      - kafka
+      - mongodb-movies
+
+  mslogs:
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    container_name: mslogs
+    ports:
+      - "5004:5000"
+    volumes:
+      - ./services/mslogs:/app
+    working_dir: /app
+    command: sh -c "while true; do sleep 1000; done"
+    networks:
+      - movie-api-network
+    depends_on:
+      - kafka
+      - mongodb-logs
+
+volumes:
+  mongo-data-users:
+  mongo-data-movies:
+  mongo-data-logs:
+
+networks:
+  movie-api-network:
+    driver: bridge
