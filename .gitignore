@@ -1,0 +1,123 @@
+# Visual Studio Code
+.vscode/
+.history/
+
+# Visual Studio
+.vscode/
+.vscode/**/*
+.vscode/ipch/
+.vscode/sql/
+.vscode/**/obj/
+.vscode/**/bin/
+.vscode/**/TestResults/
+.vscode/.vs/
+.vscode/.vs/**
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Microsoft Azure
+.vscode/AzureFunctionsTools/release/
+# Dotnet core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider
+.idea/
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/libraries
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/.rider_data/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/libraries
+.idea/**/misc.xml
+.idea/**/modules.xml
+.idea/**/vcs.xml
+.idea/**/.rider_data/
+
+# Resharper
+_ReSharper*/
+
+
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# npm cache
+.npm
+
+# Yarn cache
+.yarn
+.pnp.*
+
+# IntelliJ
+.idea/
+*.iml
+
+# VS Code directories
+.vscode/
+
+# .NET directories
+**/bin/
+**/obj/
+
+# MongoDB data directories
+mongo-data-exercises/
+mongo-data-users/
+mongo-data-movies/
+mongo-data-logs/
