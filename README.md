@@ -124,19 +124,51 @@ Este archivo `docker-compose.yml` configura un ambiente de desarrollo completo p
 
 Ambos servicios están conectados a una red llamada `movie-api-network`.
 
+## Explicación del archivo `docker-compose.yml` de los ejemplos
+Este archivo `docker-compose.yml` configura un ambiente de desarrollo completo para los ejemplos del curso. Contiene los siguientes servicios:
+
+1. **mongodb-exercises**:
+   - **Imagen**: MongoDB latest
+   - **Contenedor**: mongodb-exercises
+   - **Puertos**: `27017:27017`
+   - **Volúmenes**: `mongo-data-exercises:/data/db`
+
+2. **dotnet-exercises**:
+   - **Imagen**: .NET SDK 6.0
+   - **Contenedor**: dotnet-exercises
+   - **Puertos**: `5000:5000`
+   - **Volúmenes**: `./dotnet-exercises:/app`
+   - **Directorio de trabajo**: `/app`
+   - **Comando**: `sh -c "while true; do sleep 1000; done"`
+   - **Dependencias**: `mongodb-exercises`
+
+Ambos servicios están conectados a una red llamada `exercises-network`.
+
 ## Levantando los contenedores de las prácticas
 Para levantar los contenedores con el entorno de desarrollo, se deben de seguir estos pasos:
 
 1. Asegurarse de que el motor de Docker esté corriendo.
-2. Acceder al directorio raíz del repositorio.
+2. Acceder al directorio `practice`.
 3. Ejecutar el siguiente comando para levantar los contenedores en segundo plano:
    ```sh
    docker-compose up -d
-4. Lo anterior le indica a Docker que debe ejecutar el contenido del archivo docker-compose.yml
-5. Estos pasos sirven para levantar los contenedores de la práctica, sin embargo, el proceso para los ejemplos es el mismo.
+   ```
+4. Lo anterior le indica a Docker que debe ejecutar el contenido del archivo `docker-compose.yml`.
+
+## Levantando los contenedores de los ejemplos
+Para levantar los contenedores con el entorno de desarrollo, se deben de seguir estos pasos:
+
+1. Asegurarse de que el motor de Docker esté corriendo.
+2. Acceder al directorio `examples`.
+3. Ejecutar el siguiente comando para levantar los contenedores en segundo plano:
+   ```sh
+   docker-compose up -d
+   ```
+4. Lo anterior le indica a Docker que debe ejecutar el contenido del archivo `docker-compose.yml`.
 
 ## Todos los comandos para entrar a cada contenedor
 
+### Comandos para contenedores de las prácticas
 ```sh
 # Acceder al contenedor de Kafka
 docker exec -it kafka bash
@@ -158,3 +190,13 @@ docker exec -it msmovies bash
 
 # Acceder al contenedor de mslogs
 docker exec -it mslogs bash
+```
+
+### Comandos para contenedores de los ejemplos
+```sh
+# Acceder al contenedor de MongoDB exercises
+docker exec -it mongodb-exercises bash
+
+# Acceder al contenedor de dotnet exercises
+docker exec -it dotnet-exercises bash
+```
