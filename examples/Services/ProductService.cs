@@ -10,17 +10,53 @@ namespace examples.Services
     public class ProductService
     {
         private readonly IMongoCollection<Product> _products;
+        private readonly ILogger<ProductService> _logger;
 
-        public ProductService(IOptions<MongoDBSettings> settings)
+        public ProductService(IOptions<MongoDBSettings> settings, ILogger<ProductService> logger)
         {
             var client = new MongoClient(settings.Value.ConnectionString);
             var database = client.GetDatabase(settings.Value.DatabaseName);
 
             _products = database.GetCollection<Product>(settings.Value.ProductsCollectionName);
+            _logger = logger;
+
+            // Crear un índice simple en el campo "Name"
+            var indexKeysDefinition1 = Builders<Product>.IndexKeys.Ascending(product => product.Name);
+            _products.Indexes.CreateOne(new CreateIndexModel<Product>(indexKeysDefinition1));
+
+
+            // Crear un índice compuesto en los campos "Category" y "Price"
+            var indexKeysDefinition = Builders<Product>.IndexKeys
+                .Ascending(product => product.Name)
+                .Ascending(product => product.Price);
+            _products.Indexes.CreateOne(new CreateIndexModel<Product>(indexKeysDefinition));
+
+            var indexes = _products.Indexes.List().ToList();
+            foreach (var index in indexes)
+            {
+                Console.WriteLine(index.ToJson());
+            }
+
+
+
         }
 
-        public async Task<List<Product>> GetAsync() =>
-            await _products.Find(product => true).ToListAsync();
+        public async Task<List<Product>> GetAsync()
+        {
+            _logger.LogInformation("Getting all products from the database.");
+
+            try
+            {
+                var products = await _products.Find(product => true).ToListAsync();
+                _logger.LogInformation("Successfully retrieved {Count} products.", products.Count);
+                return products;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving products.");
+                throw; // Re-throw the exception after logging it
+            }
+        }
 
         public async Task<Product> GetAsync(string id) =>
             await _products.Find<Product>(product => product.Id == id).FirstOrDefaultAsync();
@@ -45,5 +81,11 @@ namespace examples.Services
 
         public async Task RemoveAsync(string id) =>
             await _products.DeleteOneAsync(product => product.Id == id);
+
+        public async Task<List<BsonDocument>> GetIndexesAsync()
+        {
+            var indexes = await _products.Indexes.List().ToListAsync();
+            return indexes;
+        }
     }
 }

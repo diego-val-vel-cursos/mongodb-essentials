@@ -3,6 +3,7 @@ using examples.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace examples.Controllers
 {
@@ -70,6 +71,22 @@ namespace examples.Controllers
             await _productService.RemoveAsync(id);
 
             return NoContent();
+        }
+
+        [HttpGet("indexes")]
+        public async Task<ActionResult<List<string>>> GetIndexes()
+        {
+            // Obtener la lista de índices de la colección
+            var indexes = await _productService.GetIndexesAsync();
+            var indexList = new List<string>();
+
+            foreach (var index in indexes)
+            {
+                // Convertir cada índice a formato JSON y agregarlo a la lista
+                indexList.Add(index.ToJson());
+            }
+
+            return Ok(indexList);
         }
     }
 }
