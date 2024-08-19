@@ -1,4 +1,5 @@
 using examples.Models;
+using MongoDBEssentials.Services;
 using examples.Services;
 using Microsoft.Extensions.Options;
 
@@ -12,6 +13,8 @@ builder.Services.AddSingleton<MongoDBSettings>(sp =>
     sp.GetRequiredService<IOptions<MongoDBSettings>>().Value);
 
 builder.Services.AddSingleton<ProductService>();
+builder.Services.AddSingleton<MarketingMemberService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
