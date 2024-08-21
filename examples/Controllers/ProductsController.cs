@@ -88,5 +88,19 @@ namespace examples.Controllers
 
             return Ok(indexList);
         }
+
+        // OBTENER PRODUCTOS POR NOMBRE
+        [HttpGet("search")]
+        public async Task<ActionResult<List<Product>>> GetByName([FromQuery] string name)
+        {
+            var products = await _productService.GetByNameAsync(name); // Llama al servicio para obtener productos por nombre
+
+            if (products == null || products.Count == 0)
+            {
+                return NotFound(); // Retorna 404 si no se encuentran productos con ese nombre
+            }
+
+            return products; // Retorna la lista de productos encontrados
+        }
     }
 }

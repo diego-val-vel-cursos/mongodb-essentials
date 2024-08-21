@@ -41,6 +41,12 @@ namespace examples.Services
 
         }
 
+        public async Task<List<Product>> GetByNameAsync(string name)
+        {
+            return await _products.Find(product => product.Name == name).ToListAsync();
+        }
+
+
         public async Task<List<Product>> GetAsync()
         {
             _logger.LogInformation("Getting all products from the database.");
