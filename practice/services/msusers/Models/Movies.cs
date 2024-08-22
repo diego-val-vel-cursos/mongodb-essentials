@@ -2,7 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace Movies.Models
+namespace Users.Models
 {
     public class Movie
     {

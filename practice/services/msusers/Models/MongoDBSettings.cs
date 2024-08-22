@@ -1,4 +1,4 @@
-namespace examples.Models
+namespace Users.Models
 {
     public class MongoDBSettings
     {

@@ -1,5 +1,3 @@
-
-using examples.Models;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using Users.Models;

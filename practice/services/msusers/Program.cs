@@ -1,11 +1,8 @@
 ﻿using Users.Models;
 using Users.Services;
 using Microsoft.Extensions.Options;
-using examples.Models;
-
-//
-using Confluent.Kafka;
-using KafkaExample.Services;
+// using Confluent.Kafka;
+// using KafkaExample.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +14,6 @@ builder.Services.AddSingleton<MongoDBSettings>(sp =>
     sp.GetRequiredService<IOptions<MongoDBSettings>>().Value);
 
 builder.Services.AddSingleton<UserService>();
-
-
-
 
 // Configurar Kafka Producer
 // var producerConfig = new ProducerConfig { BootstrapServers = "localhost:9092" };
@@ -37,16 +31,15 @@ builder.Services.AddSingleton<UserService>();
 // builder.Services.AddSingleton<KafkaConsumerService>();
 
 builder.Services.AddControllers();
+
+// Añadir Swagger al proyecto
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-
-
 var app = builder.Build();
+
 // var consumerService = app.Services.GetRequiredService<KafkaConsumerService>();
 // Task.Run(() => consumerService.ConsumeMessages("test-topic"));
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Users.Models;
 using Users.Services;
@@ -17,7 +16,6 @@ namespace Users.Controllers
         {
             _userService = userService;
         }
-
 
         // GET: api/User
         [HttpGet]
@@ -66,7 +64,6 @@ namespace Users.Controllers
             return NoContent();
         }
 
-
         // DELETE: api/User/:id
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> DeleteUser(string id)
@@ -94,9 +91,6 @@ namespace Users.Controllers
             }
             return Ok(user);
         }
-
-        // POST: api/Movies/:id/BuyMovie
-        
     }
 
     public class LoginRequest
