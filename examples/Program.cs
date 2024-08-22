@@ -15,7 +15,6 @@ builder.Services.AddSingleton<MongoDBSettings>(sp =>
 builder.Services.AddSingleton<ProductService>();
 builder.Services.AddSingleton<MarketingMemberService>();
 
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

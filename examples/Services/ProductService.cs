@@ -24,7 +24,6 @@ namespace examples.Services
             var indexKeysDefinition1 = Builders<Product>.IndexKeys.Ascending(product => product.Name);
             _products.Indexes.CreateOne(new CreateIndexModel<Product>(indexKeysDefinition1));
 
-
             // Crear un índice compuesto en los campos "Category" y "Price"
             var indexKeysDefinition = Builders<Product>.IndexKeys
                 .Ascending(product => product.Name)
@@ -32,13 +31,11 @@ namespace examples.Services
             _products.Indexes.CreateOne(new CreateIndexModel<Product>(indexKeysDefinition));
 
             var indexes = _products.Indexes.List().ToList();
+
             foreach (var index in indexes)
             {
                 Console.WriteLine(index.ToJson());
             }
-
-
-
         }
 
         public async Task<List<Product>> GetByNameAsync(string name)
