@@ -92,10 +92,4 @@ namespace Practice.Services.msusers.Controllers
             return Ok(user);
         }
     }
-
-    public class LoginRequest
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
 }

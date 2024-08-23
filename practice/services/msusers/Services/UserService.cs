@@ -30,11 +30,11 @@ namespace Practice.Services.msusers.Services
             _users.Indexes.CreateOne(new CreateIndexModel<User>(indexKeysDefinition));
 
             var indexes = _users.Indexes.List().ToList();
+
             foreach (var index in indexes)
             {
                 Console.WriteLine(index.ToJson());
             }
-
         }
 
         public async Task<List<User>> GetAsync()
@@ -141,8 +141,6 @@ namespace Practice.Services.msusers.Services
             var indexes = await _users.Indexes.List().ToListAsync();
             return indexes;
         }
-
-
 
         // Login
         public async Task<User?> AuthenticateAsync(string email, string password)

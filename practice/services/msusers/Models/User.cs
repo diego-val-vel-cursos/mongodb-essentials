@@ -12,10 +12,8 @@ namespace Practice.Services.msusers.Models
         [BsonElement("name")]
         public string Name { get; set; } = string.Empty;
 
-
         [BsonElement("lastname")]
         public string LastName { get; set; } = string.Empty;
-
 
         [BsonElement("email")]
         public string Email { get; set; } = string.Empty;
