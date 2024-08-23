@@ -1,4 +1,4 @@
-namespace Users.Models
+namespace Practice.Services.msusers.Models
 {
     public class MongoDBSettings
     {

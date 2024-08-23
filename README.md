@@ -200,3 +200,17 @@ docker exec -it mongodb-exercises bash
 # Acceder al contenedor de dotnet exercises
 docker exec -it dotnet-exercises bash
 ```
+
+### Comandos para levantar alguna de las aplicaciones anteriores de .net
+```sh
+#1. Acceder al contenedor a levantar
+
+#2. Ejecutar los siguientes comandos
+cd /app
+dotnet restore
+dotnet build
+dotnet run
+
+#3. Acceder a Swagger desde la máquina host (ver el docker-compose.yml para ver el puerto de cada uno)
+http://localhost:5001/swagger/index.html
+```

@@ -1,10 +1,10 @@
 using MongoDB.Driver;
 using MongoDB.Bson;
-using Users.Models;
+using Practice.Services.msusers.Models;
 
 using Microsoft.Extensions.Options;
 
-namespace Users.Services
+namespace Practice.Services.msusers.Services
 {
     public class UserService
     {

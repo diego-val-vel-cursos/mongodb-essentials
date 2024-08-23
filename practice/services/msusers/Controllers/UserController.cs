@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Users.Models;
-using Users.Services;
+using Practice.Services.msusers.Models;
+using Practice.Services.msusers.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Users.Controllers
+namespace Practice.Services.msusers.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
