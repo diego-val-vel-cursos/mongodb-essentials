@@ -1,7 +1,6 @@
 using MongoDB.Driver;
 using MongoDB.Bson;
 using Practice.Services.msusers.Models;
-
 using Microsoft.Extensions.Options;
 
 namespace Practice.Services.msusers.Services

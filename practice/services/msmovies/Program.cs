@@ -1,5 +1,5 @@
-﻿using Movies.Models;
-using Movies.Services;
+﻿using Practice.Services.msmovies.Models;
+using Practice.Services.msmovies.Services;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,26 +13,23 @@ builder.Services.AddSingleton<MongoDBSettings>(sp =>
 
 builder.Services.AddSingleton<MovieService>();
 
-
 builder.Services.AddControllers();
-
 
 // Añadir Swagger al proyecto
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// var consumerService = app.Services.GetRequiredService<KafkaConsumerService>();
-// Task.Run(() => consumerService.ConsumeMessages("test-topic"));
-
-
-
-// Comment or remove the following line to disable HTTPS redirection
-// app.UseHttpsRedirection();
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseAuthorization();
-
 app.MapControllers();
 
 // Specify to run the application on HTTP and on a specific port
-app.Run("http://0.0.0.0:5003");
+app.Run("http://0.0.0.0:5000");

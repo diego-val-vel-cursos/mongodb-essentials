@@ -1,4 +1,4 @@
-namespace Movies.Models
+namespace Practice.Services.msmovies.Models
 {
     public class MongoDBSettings
     {

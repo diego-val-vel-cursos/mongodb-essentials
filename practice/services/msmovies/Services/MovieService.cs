@@ -1,9 +1,9 @@
 using MongoDB.Driver;
 using MongoDB.Bson;
-using Movies.Models;
+using Practice.Services.msmovies.Models;
 using Microsoft.Extensions.Options;
 
-namespace Movies.Services
+namespace Practice.Services.msmovies.Services
 {
     public class MovieService
     {

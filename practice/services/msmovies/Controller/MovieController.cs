@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Movies.Models;
-using Movies.Services;
+using Practice.Services.msmovies.Models;
+using Practice.Services.msmovies.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Movies.Controllers
+namespace Practice.Services.msmovies.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -81,5 +81,3 @@ namespace Movies.Controllers
         }
     }
 }
-
-
