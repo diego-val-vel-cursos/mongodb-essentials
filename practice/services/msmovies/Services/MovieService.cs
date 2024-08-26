@@ -130,11 +130,56 @@ namespace Practice.Services.msmovies.Services
             }
         }
 
+
+
         // Get all indexes
         public async Task<List<BsonDocument>> GetIndexesAsync()
         {
             var indexes = await _movies.Indexes.List().ToListAsync();
             return indexes;
+        }
+
+
+        // Search movies
+        public async Task<List<Movie>> SearchMoviesAsync(string? title, string? genre, string? director, string? orderBy, bool ascending)
+        {
+            var filterBuilder = Builders<Movie>.Filter;
+            var filters = new List<FilterDefinition<Movie>>();
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                filters.Add(filterBuilder.Regex("Title", new BsonRegularExpression(title, "i"))); // Búsqueda insensible a mayúsculas
+            }
+
+            if (!string.IsNullOrEmpty(genre))
+            {
+                filters.Add(filterBuilder.Eq("Genre", genre));
+            }
+
+            if (!string.IsNullOrEmpty(director))
+            {
+                filters.Add(filterBuilder.Eq("Director", director));
+            }
+
+            var filter = filters.Count > 0 ? filterBuilder.And(filters) : FilterDefinition<Movie>.Empty;
+
+            var sortBuilder = Builders<Movie>.Sort;
+            var sort = ascending ? sortBuilder.Ascending(orderBy) : sortBuilder.Descending(orderBy);
+
+            return await _movies.Find(filter).Sort(sort).ToListAsync();
+        }
+
+
+
+        // Decrease stock
+        public async Task<bool> DecreaseStockAsync(string movieId)
+        {
+            var filter = Builders<Movie>.Filter.Eq(m => m.Id, movieId);
+            var update = Builders<Movie>.Update.Inc(m => m.Stock, -1);
+
+            var result = await _movies.UpdateOneAsync(filter, update);
+
+            return result.ModifiedCount > 0;
         }
     }
 }

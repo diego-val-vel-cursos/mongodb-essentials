@@ -79,5 +79,37 @@ namespace Practice.Services.msmovies.Controllers
 
             return NoContent();
         }
+
+        
+
+        // BUSQUEDA POR FILTRO Y ORDENAMIENTO
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string? title, [FromQuery] string? genre, [FromQuery] string? director, [FromQuery] string? orderBy = "Title", [FromQuery] bool ascending = true)
+        {
+            var movies = await _movieService.SearchMoviesAsync(title, genre, director, orderBy, ascending);
+
+            if (movies == null || movies.Count == 0)
+            {
+                return NotFound("No movies found matching the criteria.");
+            }
+
+            return Ok(movies);
+        }
+
+        
+        // DECREMENTAR STOCK
+        [HttpPut("decrease-stock/{id}")]
+        public async Task<IActionResult> DecreaseStock(string id)
+        {
+            var success = await _movieService.DecreaseStockAsync(id);
+
+            if (!success)
+            {
+                return NotFound("Movie not found or stock could not be decreased.");
+            }
+
+            return Ok("Stock decreased by 1.");
+        }
+
     }
 }

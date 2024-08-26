@@ -15,6 +15,9 @@ namespace Practice.Services.msmovies.Models
         [BsonElement("genre")]
         public string Genre { get; set; } = string.Empty;
 
+        [BsonElement("director")]
+        public string Director { get; set; } = string.Empty;
+
         [BsonElement("year")]
         public int Year { get; set; } = 2024;
 
