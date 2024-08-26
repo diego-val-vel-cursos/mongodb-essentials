@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Practice.Services.msusers.Messaging;
 using Practice.Services.msusers.Models;
 using Practice.Services.msusers.Services;
 using System.Collections.Generic;
@@ -11,10 +12,12 @@ namespace Practice.Services.msusers.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;
+        private readonly KafkaProducer _kafkaProducer;
 
-        public UserController(UserService userService)
+        public UserController(UserService userService, KafkaProducer kafkaProducer)
         {
             _userService = userService;
+            _kafkaProducer = kafkaProducer;
         }
 
         // GET: api/User
@@ -35,6 +38,19 @@ namespace Practice.Services.msusers.Controllers
             {
                 return NotFound();
             }
+
+            // Crear el evento para Kafka
+            var userEvent = new
+            {
+                Action = "GetUserById",
+                Timestamp = DateTime.UtcNow,
+                Details = $"Retrieved user with ID: {id}",
+                Microservice = "msusers",
+                Endpoint = "api/User/GetUserById"
+            };
+
+            // Enviar el evento a Kafka
+            await _kafkaProducer.ProduceEventAsync(userEvent);
 
             return Ok(user);
         }
@@ -85,10 +101,12 @@ namespace Practice.Services.msusers.Controllers
         public async Task<ActionResult<User>> Login([FromBody] LoginRequest loginRequest)
         {
             var user = await _userService.AuthenticateAsync(loginRequest.Email, loginRequest.Password);
+
             if (user == null)
             {
                 return Unauthorized("Invalid email or password.");
             }
+
             return Ok(user);
         }
     }

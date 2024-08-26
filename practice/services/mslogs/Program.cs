@@ -1,6 +1,6 @@
-﻿using Practice.Services.msusers.Messaging;
-using Practice.Services.msusers.Models;
-using Practice.Services.msusers.Services;
+﻿using Practice.Services.mslogs.Messaging;
+using Practice.Services.mslogs.Models;
+using Practice.Services.mslogs.Services;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,13 +12,13 @@ builder.Services.Configure<MongoDBSettings>(
 builder.Services.AddSingleton<MongoDBSettings>(sp =>
     sp.GetRequiredService<IOptions<MongoDBSettings>>().Value);
 
-builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<LogService>();
 
 // Configurar servicios para Kafka
 builder.Services.Configure<KafkaSettings>(
     builder.Configuration.GetSection(nameof(KafkaSettings)));
 
-builder.Services.AddSingleton<KafkaProducer>();
+builder.Services.AddSingleton<KafkaConsumer>();
 
 builder.Services.AddControllers();
 
@@ -34,6 +34,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Iniciar el consumidor de Kafka en segundo plano
+var kafkaConsumer = app.Services.GetRequiredService<KafkaConsumer>();
+var cancellationTokenSource = new CancellationTokenSource();
+Task.Run(() => kafkaConsumer.Consume(cancellationTokenSource.Token));
 
 app.UseAuthorization();
 app.MapControllers();

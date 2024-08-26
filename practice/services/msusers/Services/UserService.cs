@@ -60,6 +60,7 @@ namespace Practice.Services.msusers.Services
             try
             {
                 var user = await _users.Find(user => user.Id == id).FirstOrDefaultAsync();
+
                 if (user == null)
                 {
                     _logger.LogWarning("User with ID {Id} was not found.", id);
