@@ -25,6 +25,6 @@ namespace Practice.Services.msusers.Models
         public DateTime DateCreated { get; set; }
 
         [BsonElement("movies")]
-        public Movie[] Movies { get; set; } = new Movie[0];
+        public List<String> Movies { get; set; } = new List<String>();
     }
 }

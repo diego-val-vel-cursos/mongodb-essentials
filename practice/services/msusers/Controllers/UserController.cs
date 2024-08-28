@@ -91,5 +91,18 @@ namespace Practice.Services.msusers.Controllers
             }
             return Ok(user);
         }
+
+        // POST: api/User/Buy
+        [HttpPost("Buy")]
+        public async Task<ActionResult<User>> Buy([FromBody] BuyRequest buyRequest)
+        {
+            var user = await _userService.BuyAsync(buyRequest.UserId, buyRequest.MovieId);
+            if (user == null){
+                return NotFound("User or movie not found.");
+            }
+            return Ok(user);
+        }
+
+
     }
 }

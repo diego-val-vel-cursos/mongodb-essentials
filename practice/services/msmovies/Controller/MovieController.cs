@@ -30,9 +30,7 @@ namespace Practice.Services.msmovies.Controllers
         public async Task<ActionResult<Movie>> GetMovieById(string id)
         {
             var movie = await _movieService.GetAsync(id);
-
-            if (movie == null)
-            {
+            if (movie == null){
                 return NotFound();
             }
 
@@ -102,14 +100,35 @@ namespace Practice.Services.msmovies.Controllers
         public async Task<IActionResult> DecreaseStock(string id)
         {
             var success = await _movieService.DecreaseStockAsync(id);
-
+    
             if (!success)
             {
                 return NotFound("Movie not found or stock could not be decreased.");
             }
 
-            return Ok("Stock decreased by 1.");
+            var movie = await _movieService.GetAsync(id);
+            if (movie == null){
+                return NotFound();
+            }
+
+            return Ok(movie);
         }
 
+        // 
+        // GET: api/Movie/decrease/:id
+        [HttpGet("decrease/{id:length(24)}")]
+        public async Task<IActionResult> GetAndDecreaseStock(string id)
+        {
+            var movie = await _movieService.GetAsync(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            await _movieService.DecreaseStockAsync(id);
+
+            return Ok(movie);
+        }
     }
 }

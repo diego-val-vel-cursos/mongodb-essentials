@@ -156,5 +156,25 @@ namespace Practice.Services.msusers.Services
         }
 
 
+        public async Task<User?> BuyAsync(string userId, string movieId)
+        {
+            var user = await _users.Find<User>(user => user.Id == userId).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                _logger.LogWarning("User with ID {UserId} was not found.", userId);
+                return null;
+            }
+
+            // Update the user's movies collection
+            user.Movies.Add(movieId);
+
+            // Update the user in the database
+            await _users.ReplaceOneAsync(u => u.Id == userId, user);
+
+            return user;
+        }
+
+
     }
 }
