@@ -2,21 +2,30 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using Practice.Services.msusers.Models;
 using Microsoft.Extensions.Options;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Practice.Services.msusers.Services
 {
     public class UserService
     {
         private readonly IMongoCollection<User> _users;
+        private readonly IHttpClientFactory _clientFactory;
         private readonly ILogger<UserService> _logger;
 
-        public UserService(IOptions<MongoDBSettings> settings, ILogger<UserService> logger)
+        public UserService(
+            IOptions<MongoDBSettings> settings, ILogger<UserService> logger,
+            IHttpClientFactory clientFactory
+            )
         {
+            
             var client = new MongoClient(settings.Value.ConnectionString);
             var database = client.GetDatabase(settings.Value.DatabaseName);
             
             _users = database.GetCollection<User>(settings.Value.UsersCollectionName);
             _logger = logger;
+
+            _clientFactory = clientFactory;
 
             // Crear un índice simple en el campo "Name"
             var indexKeysDefinition1 = Builders<User>.IndexKeys.Ascending(user => user.Email);
@@ -166,15 +175,23 @@ namespace Practice.Services.msusers.Services
                 return null;
             }
 
-            // Update the user's movies collection
-            user.Movies.Add(movieId);
+            var client = _clientFactory.CreateClient("msmovies");
+            var response = await client.GetAsync($"/api/movie/decrease/{movieId}");
 
-            // Update the user in the database
-            await _users.ReplaceOneAsync(u => u.Id == userId, user);
-
+            if (response.IsSuccessStatusCode){
+                var movie = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(movie);
+                // Update the user's movies collection
+                user.Movies.Add(movieId);
+                // Update the user in the database
+                await _users.ReplaceOneAsync(u => u.Id == userId, user);
+            }
+            else{
+                throw new Exception("Unable to fetch movie details.");
+            }
+   
             return user;
         }
-
 
     }
 }

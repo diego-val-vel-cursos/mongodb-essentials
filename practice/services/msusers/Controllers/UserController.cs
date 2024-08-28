@@ -103,6 +103,5 @@ namespace Practice.Services.msusers.Controllers
             return Ok(user);
         }
 
-
     }
 }

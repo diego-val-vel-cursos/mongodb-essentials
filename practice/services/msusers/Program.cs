@@ -17,7 +17,6 @@ builder.Services.AddSingleton<MongoDBSettings>(sp =>
 
 builder.Services.AddSingleton<UserService>();
 // Registrar MovieClientService
-builder.Services.AddSingleton<MovieClientService>();
 
 builder.Services.AddControllers();
 
