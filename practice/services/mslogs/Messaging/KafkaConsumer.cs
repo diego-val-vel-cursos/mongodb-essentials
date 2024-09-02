@@ -21,6 +21,7 @@ namespace Practice.Services.mslogs.Messaging
                 GroupId = "mslogs-consumer-group",
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
+
             _consumer = new ConsumerBuilder<Null, string>(config).Build();
             _consumer.Subscribe(kafkaSettings.Value.Topic);
             _logService = logService;
